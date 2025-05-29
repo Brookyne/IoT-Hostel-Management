@@ -56,5 +56,10 @@
   "C_Cpp_Runner.showCompilationTime": false,
   "C_Cpp_Runner.useLinkTimeOptimization": false,
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
+<<<<<<< HEAD
   "cmake.sourceDirectory": "C:/Users/ASUS/Desktop/YoloUNO_PlatformIO-OTA_update/lib/ArduinoJson/src"
+=======
+  "cmake.sourceDirectory": "C:/Users/ASUS/Desktop/IOT-LAB-lab3-v2/lib/ArduinoJson/src",
+  "C_Cpp.dimInactiveRegions": false
+>>>>>>> 46e2ced071d33e545f120463fb65d414fd8957a5
 }
