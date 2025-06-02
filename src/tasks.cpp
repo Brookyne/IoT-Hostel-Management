@@ -6,7 +6,7 @@
 #include "button_task.h"
 #include "ap_mode_task.h"
 #include "sinric_task.h"
-
+#include "oled_task.h"
 // Task handles
 TaskHandle_t wifiTaskHandle = NULL;
 TaskHandle_t mqttTaskHandle = NULL;
@@ -15,7 +15,7 @@ TaskHandle_t otaTaskHandle = NULL;
 TaskHandle_t buttonTaskHandle = NULL;
 TaskHandle_t apModeTaskHandle = NULL;
 TaskHandle_t sinricTaskHandle = NULL;
-
+TaskHandle_t oledTaskHandle = NULL; // Add this line to define the handle
 // Semaphore cho các thao tác ThingsBoard
 SemaphoreHandle_t tbMutex = NULL;
 
@@ -37,4 +37,6 @@ void createAllTasks() {
   xTaskCreate(ButtonTask, "ButtonTask", BUTTON_TASK_STACK_SIZE, NULL, BUTTON_TASK_PRIORITY, &buttonTaskHandle);
   xTaskCreate(apModeTask, "APModeTask", AP_MODE_TASK_STACK_SIZE, NULL, AP_MODE_TASK_PRIORITY, &apModeTaskHandle);
   xTaskCreate(sinricTask, "SinricTask", SINRIC_TASK_STACK_SIZE, NULL, SINRIC_TASK_PRIORITY, &sinricTaskHandle);
-} 
+  xTaskCreate(oled_task, "OLEDTask", OLED_TASK_STACK_SIZE, NULL, OLED_TASK_PRIORITY, &oledTaskHandle); // << THÊM MỚI
+  
+}

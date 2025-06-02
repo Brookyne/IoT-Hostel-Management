@@ -10,7 +10,7 @@
 #include "button_task.h"
 #include "ap_mode_task.h"
 #include "sinric_task.h"
-
+#include "oled_task.h"
 // Định nghĩa các hằng số
 // const int EEPROM_SIZE = 512;  // Now defined in main_constants.cpp
 
@@ -29,13 +29,15 @@ void setup() {
   // Khởi tạo EEPROM và tải thông tin WiFi
   EEPROM.begin(EEPROM_SIZE);
   loadWiFiCredentials();
-  
+  Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
   // Khởi tạo GPIO pins
   pinMode(LED_PIN, OUTPUT);
   pinMode(FAN_PIN, OUTPUT);
   digitalWrite(LED_PIN, LOW);
   digitalWrite(FAN_PIN, LOW);
   
+  setupOLED(); // << THÊM MỚI: Khởi tạo OLED
+
   // Khởi tạo cảm biến DHT
   dht.begin();
   
@@ -54,7 +56,12 @@ void setup() {
   } else {
     // Initialize WiFi and check for connection
     InitWiFi();
-    
+    if (wifiConnected) {
+        initNTP(); // Đồng bộ NTP nếu WiFi kết nối thành công
+    } else {
+      Serial.println("Initial WiFi connection failed. Starting AP Mode...");
+      setupAP();
+    }
     // If WiFi connection failed, start AP mode
     if (!wifiConnected) {
       Serial.println("Initial WiFi connection failed. Starting AP Mode...");
@@ -62,8 +69,10 @@ void setup() {
     }
   }
   
+  
+
   // Tạo tất cả các task RTOS
-  createAllTasks();
+  // createAllTasks();
 }
 
 void loop() {
