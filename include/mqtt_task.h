@@ -10,6 +10,7 @@
 #include <Server_Side_RPC.h>
 #include <OTA_Firmware_Update.h>
 
+
 // MQTT configuration
 extern const char TOKEN[];
 extern const char THINGSBOARD_SERVER[];
@@ -48,5 +49,6 @@ void processSharedAttributeUpdate(const JsonObjectConst &data);
 void processSharedAttributeRequest(const JsonObjectConst &data);
 void requestTimedOut();
 void mqttTask(void *parameter);
+void sendRfidData(const String &cardId);
 
 #endif /* MQTT_TASK_H */ 

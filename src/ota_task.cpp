@@ -4,8 +4,8 @@
 #include "wifi_task.h"
 
 // OTA configuration
-const char CURRENT_FIRMWARE_TITLE[] = "RTOTA";
-const char CURRENT_FIRMWARE_VERSION[] = "2";
+const char CURRENT_FIRMWARE_TITLE[] = "OTA Project";
+const char CURRENT_FIRMWARE_VERSION[] = "2.0";
 const uint8_t FIRMWARE_FAILURE_RETRIES = 12U;
 const uint16_t FIRMWARE_PACKET_SIZE = 4096U;
 

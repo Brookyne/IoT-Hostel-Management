@@ -47,8 +47,8 @@ static unsigned long lastDebugPrint = 0;
 const unsigned long DEBUG_PRINT_INTERVAL = 10000; // Print debug info every 10 seconds max
 
 // GPIO pins - need to be defined here for RPC callbacks
-#define LED_PIN 2
-#define FAN_PIN 3
+// #define LED_PIN 2
+// #define FAN_PIN 3
 
 // Initialize underlying client, used to establish a connection
 WiFiClient espClient;
@@ -382,5 +382,29 @@ void mqttTask(void *parameter) {
     }
     
     vTaskDelay(100 / portTICK_PERIOD_MS); // Process MQTT frequently
+  }
+} 
+
+// Function to send RFID data to ThingsBoard
+void sendRfidData(const String &cardId) {
+  // Only send if MQTT is connected and not in AP mode
+  if (!mqttConnected || apMode || !wifiConnected) {
+    return;
+  }
+  
+  if (xSemaphoreTake(tbMutex, pdMS_TO_TICKS(1000)) == pdTRUE) {
+    // Send RFID card ID as telemetry data using individual key-value pairs
+    bool sent1 = tb.sendTelemetryData("rfid_card_id", cardId.c_str());
+    bool sent2 = tb.sendTelemetryData("rfid_timestamp", millis());
+    
+    if (sent1 && sent2) {
+      Serial.printf("RFID data sent to ThingsBoard: %s\n", cardId.c_str());
+    } else {
+      Serial.println("Failed to send RFID data to ThingsBoard");
+    }
+    
+    xSemaphoreGive(tbMutex);
+  } else {
+    Serial.println("Failed to acquire tbMutex for RFID data");
   }
 } 

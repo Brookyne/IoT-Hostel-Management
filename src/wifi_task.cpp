@@ -3,8 +3,8 @@
 #include "ap_mode_task.h"
 
 bool wifiConnected = false;
-char WIFI_SSID[32] = "Anonymous";
-char WIFI_PASSWORD[64] = "Nguyen2004";
+char WIFI_SSID[32] = "hehe";
+char WIFI_PASSWORD[64] = "12345678";
 const int WIFI_TIMEOUT = 20000;  // 20 seconds timeout for connection attempts
 const int MAX_RECONNECT_ATTEMPTS = 3;  // Maximum number of reconnection attempts before entering AP mode
 

@@ -3,6 +3,7 @@
 #include "ap_mode_task.h"
 #include "wifi_task.h"
 #include "sinric_task.h"
+#include "fan_task.h"
 #include "Ticker.h"
 
 // Button task configuration
@@ -36,15 +37,13 @@ void ButtonTask(void *pvParameters) {
             
             // Force immediate shared attribute request to trigger sync to SinricPro
             forceSharedRequest = true;
-            
-            // Don't send to SinricPro directly - let shared attribute sync handle it
-            // This prevents button-induced loops
           }
           // Toggle Fan state with button 1
           else if (i == 1) {
             fanState = !fanState;
             lastKnownFanState = fanState; // Update tracking to prevent loops
-            digitalWrite(FAN_PIN, fanState ? HIGH : LOW);
+            updateFanSpeed(fanState); // Use PWM control function
+            
             if (xSemaphoreTake(tbMutex, pdMS_TO_TICKS(1000)) == pdTRUE) {
               tb.sendAttributeData("deviceState2", fanState);
               xSemaphoreGive(tbMutex);
